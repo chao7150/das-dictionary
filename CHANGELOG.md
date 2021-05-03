@@ -8,3 +8,10 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * minimum application ([d6c33ef](https://github.com/chao7150/typescript/commit/d6c33efb1503f8118af31d2e44320288675cf93a))
+
+## 1.0.0 (2021-05-03)
+
+
+### Features
+
+* minimum application ([d6c33ef](https://github.com/chao7150/typescript/commit/d6c33efb1503f8118af31d2e44320288675cf93a))
