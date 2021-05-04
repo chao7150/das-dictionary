@@ -12,6 +12,7 @@ jobs:
       - name: Version up
         run: yarn standard-version
       - name: Tag push
-        run: git config --local user.email "action@github.com"
-        run: git config --local user.name "GitHub Action"
-        run: git push --follow-tags origin master
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git push --follow-tags origin master
