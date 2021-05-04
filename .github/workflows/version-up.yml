@@ -9,10 +9,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: yarn install
-      - name: Version up
-        run: yarn standard-version
-      - name: Tag push
+      - name: Set git account
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git push --follow-tags origin master
+      - name: Version up
+        run: yarn standard-version
+      - name: Tag push
+        run: git push --follow-tags origin master
