@@ -1,0 +1,17 @@
+on:
+  push:
+    branches: master
+
+jobs:
+  version-up:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Version up
+        run: yarn standard-version
+      - name: Tag push
+        run: git config --local user.email "action@github.com"
+        run: git config --local user.name "GitHub Action"
+        run: git push --follow-tags origin master

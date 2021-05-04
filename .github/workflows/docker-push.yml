@@ -1,18 +1,9 @@
 on:
   push:
-    branches: master
+    tags:
+      - "v*"
 
 jobs:
-  version-up:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: yarn install
-      - name: Version up
-        run: yarn standard-version
-      - name: Tag push
-        run: git push --follow-tags origin master
   build:
     runs-on: ubuntu-latest
     steps:
