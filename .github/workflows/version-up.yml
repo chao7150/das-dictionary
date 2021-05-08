@@ -1,10 +1,14 @@
 on:
   push:
     branches: master
-    tags-ignore:
-      - "v*"
 
 jobs:
+  see:
+    runs-on: ubuntu-latest:
+    steps:
+      - name: aaa
+        env: GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
   version-up:
     runs-on: ubuntu-latest
     steps:
