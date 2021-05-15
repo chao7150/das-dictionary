@@ -3,13 +3,6 @@ on:
     branches: master
 
 jobs:
-  see:
-    runs-on: ubuntu-latest
-    steps:
-      - name: aaa
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
   version-up:
     runs-on: ubuntu-latest
     steps:
