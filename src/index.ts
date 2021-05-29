@@ -1,28 +1,61 @@
 import fastify from "fastify";
 import { Static, Type } from "@sinclair/typebox";
+import { PrismaClient } from "@prisma/client";
 
-const app = fastify({ logger: true });
-
-const Titles = Type.Object({
-  titles: Type.String(),
+const app = fastify({
+  logger: { level: "info" },
+  ajv: { customOptions: { removeAdditional: false } },
 });
-type TitlesType = Static<typeof Titles>;
+const prisma = new PrismaClient();
 
-app.get<{ Querystring: TitlesType }>(
-  "/work-id",
+const Work = Type.Object({
+  id: Type.Number(),
+  title: Type.String(),
+});
+type WorkType = Static<typeof Work>;
+
+const WorkQuery = Type.Union([
+  Type.Object({ id: Type.Number() }),
+  Type.Object({ title: Type.String() }),
+]);
+type WorkQueryType = Static<typeof WorkQuery>;
+console.log(JSON.stringify(WorkQuery));
+
+const ErrorObj = Type.Object({
+  title: Type.String(),
+  status: Type.String(),
+  detail: Type.String(),
+});
+type ErrorObjType = Static<typeof ErrorObj>;
+
+app.get<{ Querystring: WorkQueryType; Reply: WorkType | ErrorObjType }>(
+  "/work",
   {
+    preValidation: (request, reply, done) => {
+      done();
+    },
     schema: {
-      querystring: Titles,
+      querystring: WorkQuery,
       response: {
-        200: {
-          type: "array",
-          items: { type: "integer" },
-        },
+        200: Work,
+        404: ErrorObj,
       },
     },
   },
   async (request, reply) => {
-    return request.query.titles;
+    if ("id" in request.query) {
+      return prisma.work.findFirst({
+        where: { id: { equals: request.query.id } },
+        rejectOnNotFound: true,
+      });
+    }
+    if (request.query.title) {
+      return prisma.work.findFirst({
+        where: { title: { contains: request.query.title } },
+        rejectOnNotFound: true,
+      });
+    }
+    throw new Error("no valid query");
   },
 );
 
